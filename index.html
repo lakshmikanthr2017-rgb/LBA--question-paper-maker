@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTBS & LBA Chapter-wise Question Paper with Answers</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #e8f0fe;
+            --text-color: #333;
+            --border-color: #ccc;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        select {
+            padding: 9px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1557b0;
+        }
+        .output-section {
+            margin-top: 25px;
+            padding: 20px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 6px;
+            background: #fff;
+        }
+        .marks-info {
+            background: var(--secondary-color);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            border-left: 5px solid var(--primary-color);
+        }
+        .qa-box {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+        .answer {
+            color: #137333;
+            font-weight: bold;
+            margin-top: 4px;
+            background: #f1f8e9;
+            padding: 6px;
+            border-radius: 4px;
+        }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            .form-grid, button, .no-print { display: none; }
+            .output-section { border: none; padding: 0; background: #fff; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ಕರ್ನಾಟಕ ಶಾಲಾ ಶಿಕ್ಷಣ - LBA ಅಧ್ಯಾಯವಾರು ಪ್ರಶ್ನೆ ಪತ್ರಿಕೆ ಮತ್ತು ಉತ್ತರಗಳು</h1>
+    <p class="subtitle">KTBS ಪಠ್ಯಪುಸ್ತಕಗಳ ಆಧಾರಿತ ಲಿಖಿತ ಹಾಗೂ ಮೌಖಿಕ ಮೌಲ್ಯಮಾಪನ</p>
+
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="classSelect">ತರಗತಿ ಆಯ್ಕೆಮಾಡಿ (Class):</label>
+            <select id="classSelect" onchange="updateSubjects()">
+                <option value="1">1ನೇ ತರಗತಿ (Bilingual)</option>
+                <option value="2">2ನೇ ತರಗತಿ (Bilingual)</option>
+                <option value="3">3ನೇ ತರಗತಿ (Bilingual)</option>
+                <option value="4">4ನೇ ತರಗತಿ (Bilingual)</option>
+                <option value="5">5ನೇ ತರಗತಿ (Bilingual)</option>
+                <option value="6">6ನೇ ತರಗತಿ (Kannada Medium)</option>
+                <option value="7" selected>7ನೇ ತರಗತಿ (Kannada Medium)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="subjectSelect">ವಿಷಯ ಆಯ್ಕೆಮಾಡಿ (Subject):</label>
+            <select id="subjectSelect" onchange="updateChapters()">
+                <!-- Populated dynamically -->
+            </select>
+        </div>
+
+        <div class="form-group" style="grid-column: span 2;">
+            <label for="chapterSelect">ಅಧ್ಯಾಯ / ಪಾಠ ಆಯ್ಕೆಮಾಡಿ (Chapter):</label>
+            <select id="chapterSelect">
+                <!-- Populated dynamically -->
+            </select>
+        </div>
+    </div>
+
+    <button onclick="generateQuestionPaper()">ಪ್ರಶ್ನೆ ಪತ್ರಿಕೆ ಮತ್ತು ಉತ್ತರಗಳನ್ನು ಸಿದ್ಧಪಡಿಸಿ</button>
+
+    <div class="output-section" id="outputArea" style="display:none;">
+        <div id="resultContent"></div>
+        <button class="no-print" onclick="window.print()" style="margin-top: 20px; background-color: #34a853;">ಪ್ರಿಂಟ್ / PDF ಉಳಿಸಿ (Print/Save)</button>
+    </div>
+</div>
+
+<script>
+    // Chapter-wise Database with Questions and Answers
+    const db = {
+        "5": {
+            "ಪರಿಸರ ಅಧ್ಯಯನ್ (EVS)": [
+                {
+                    title: "ಪಾಠ 1: ನಮ್ಮ ಸುತ್ತಲಿನ ಪರಿಸರ",
+                    written: [
+                        { q: "1. ಜೀವವಿರುವ ಮತ್ತು ಜೀವವಿಲ್ಲದ ವಸ್ತುಗಳ ಒಟ್ಟು ಮೊತ್ತವನ್ನು ______ ಎನ್ನುವರು.", marks: "1 Mark", a: "ಪರಿಸರ" },
+                        { q: "2. ಜೈವಿಕ ಘಟಕಗಳಿಗೆ ಎರಡು ಉದಾಹರಣೆ ಕೊಡಿ.", marks: "2 Marks", a: "ಸಸ್ಯಗಳು ಮತ್ತು ಪ್ರಾಣಿಗಳು." },
+                        { q: "3. ಪರಿಸರ ಸಂರಕ್ಷಣೆ ಯಾಕೆ ಮುಖ್ಯ?", marks: "2 Marks", a: "ಭೂಮಿಯ ಮೇಲೆ ಜೀವಸಂಕುಲದ ಸಮತೋಲನ ಕಾಪಾಡಲು." }
+                    ],
+                    oral: ["ನಿಮ್ಮ ಶಾಲೆಯ ಸುತ್ತಲಿರುವ ಎರಡು ಸಸ್ಯಗಳ ಹೆಸರನ್ನು ಹೇಳಿ.", "ಪರಿಸರ ಮಾಲಿನ್ಯ ತಡೆಯುವ ಮಾರ್ಗವೇನು?"]
+                }
+            ]
+        },
+        "7": {
+            "ಸಮಾಜ ವಿಜ್ಞಾನ (Social Science)": [
+                {
+                    title: "ಅಧ್ಯಾಯ 1: ಉತ್ತರ ಭಾರತದ ಪ್ರಾಚೀನ ರಾಜ ವಂಶಗಳು",
+                    written: [
+                        { q: "1. ಗುಪ್ತರ ಸಾಮ್ರಾಜ್ಯದ ಸ್ಥಾಪಕ ಯಾರು?", marks: "1 Mark", a: "ಶ್ರೀಗುಪ್ತ" },
+                        { q: "2. ಹರ್ಷವರ್ಧನನ ರಾಜಧಾನಿ ಯಾವುದು?", marks: "1 Mark", a: "ಕನೌಜ್" },
+                        { q: "3. ಐಹೊಳೆ ಶಾಸನವನ್ನು ರಚಿಸಿದ ಕವಿ ಯಾರು?", marks: "2 Marks", a: "ರವಿಕೀರ್ತಿ" },
+                        { q: "4. ನಳಂದಾ ವಿಶ್ವವಿದ್ಯಾಲಯಕ್ಕೆ ಆಶ್ರಯ ನೀಡಿದ ದೊರೆ ಯಾರು?", marks: "3 Marks", a: "ಹರ್ಷವರ್ಧನ" },
+                        { q: "5. ಗುಪ್ತರ ಕಾಲದ ಪ್ರಮುಖ ಖಗೋಳಶಾಸ್ತ್ರಜ್ಞ ಯಾರು?", marks: "3 Marks", a: "ಆರ್ಯಭಟ" }
+                    ],
+                    oral: [
+                        "ಚಕ್ರವರ್ತಿ ಹರ್ಷವರ್ಧನನ ಆಡಳಿತದ ಬಗ್ಗೆ ಎರಡು ಸಂಗತಿಗಳನ್ನು ತಿಳಿಸಿ.",
+                        "ಹ್ಯೂಯೆನ್ ತ್ಸಾಂಗ್ ಭಾರತಕ್ಕೆ ಭೇಟಿ ನೀಡಲು ಕಾರಣವೇನು?"
+                    ]
+                },
+                {
+                    title: "ಅಧ್ಯಾಯ 2: ದಕ್ಷಿಣ ಭಾರತದ ರಾಜವಂಶಗಳು",
+                    written: [
+                        { q: "1. ಬಾದಾಮಿ ಚಾಲುಕ್ಯರ ಪ್ರಸಿದ್ಧ ದೊರೆ ಯಾರು?", marks: "1 Mark", a: "ಇಮ್ಮಡಿ ಪುಲಿಕೇಶಿ" },
+                        { q: "2. ಎಲ್ಲೂರೆಯ ಕೈಲಾಸ ದೇವಾಲಯ ನಿರ್ಮಿಸಿದವರು ಯಾರು?", marks: "2 Marks", a: "ರಾಷ್ಟ್ರಕೂಟರು (ಮೊದಲನೆ ಕೃಷ್ಣ)" },
+                        { q: "3. ಪಲ್ಲವರ ಪ್ರಸಿದ್ಧ ರಾಜಧಾನಿ ಯಾವುದು?", marks: "2 Marks", a: "ಕಾஞ்சிಪುರ" },
+                        { q: "4. ಚಾಲುಕ್ಯ ಮತ್ತು ಪಲ್ಲವರ ನಡುವಿನ ಸಂಘರ್ಷಕ್ಕೆ ಕಾರಣವೇನು?", marks: "4 Marks", a: "ರಾಜ್ಯ ವಿಸ್ತರಣೆ ಮತ್ತು ರಾಜಕೀಯ ಪ್ರಾಬಲ್ಯ." }
+                    ],
+                    oral: [
+                        "ಇಮ್ಮಡಿ ಪುಲಿಕೇಶಿಯು ನರ್ಮದಾ ನದಿ ತೀರದಲ್ಲಿ ಯಾರನ್ನು ಸೋಲಿಸಿದನು?",
+                        "ಮಹಾಬಲಿಪುರಂ ರಥಗಳ ವಿಶೇಷತೆ ಏನು?"
+                    ]
+                }
+            ],
+            "ವಿಜ್ಞಾನ (Science)": [
+                {
+                    title: "ಅಧ್ಯಾಯ 1: ಪ್ರಾಣಿಗಳಲ್ಲಿ ಪೋಷಣೆ",
+                    written: [
+                        { q: "1. ಅಮೆಬಾದಲ್ಲಿ ಆಹಾರ ಹಿಡಿಯಲು ಸಹಾಯ ಮಾಡುವ ಅಂಗಗಳು ಯಾವುವು?", marks: "1 Mark", a: "ಹುಸಿ ಕಾಲುಗಳು (Pseudopodia)" },
+                        { q: "2. ಮನುಷ್ಯನ ಜೀರ್ಣಾಂಗ ವ್ಯವಸ್ಥೆಯ ಅತಿ ಉದ್ದವಾದ ಭಾಗ ಯಾವುದು?", marks: "1 Mark", a: "ಸಣ್ಣ ಕರುಳು" },
+                        { q: "3. ಜಠರದಲ್ಲಿರುವ ಆಮ್ಲ ಯಾವುದು ಮತ್ತು ಅದರ ಕೆಲಸವೇನು?", marks: "3 Marks", a: "ಹೈಡ್ರೋಕ್ಲೋರಿಕ್ ಆಮ್ಲ (HCl). ಇದು ಬ್ಯಾಕ್ಟೀರಿಯಾಗಳನ್ನು ಕೊಲ್ಲುತ್ತದೆ." }
+                    ],
+                    oral: [
+                        "ನಾಲಿಗೆಯ ವಿವಿಧ ರುಚಿ ಮೊಗ್ಗುಗಳ ಕಾರ್ಯವನ್ನು ವಿವರಿಸಿ.",
+                        "ಅಮೆಬಾದಲ್ಲಿ ಜೀರ್ಣಕ್ರಿಯೆ ಹೇಗೆ ನಡೆಯುತ್ತದೆ?"
+                    ]
+                }
+            ]
+        }
+    };
+
+    function updateSubjects() {
+        const cls = document.getElementById('classSelect').value;
+        const subSelect = document.getElementById('subjectSelect');
+        subSelect.innerHTML = '';
+        
+        let subjects = [];
+        if(cls >= 1 && cls <= 5) {
+            subjects = ['ಕನ್ನಡ (Kannada)', 'English', 'ಗಣಿತ (Mathematics)', 'ಪರಿಸರ ಅಧ್ಯಯನ್ (EVS)'];
+        } else {
+            subjects = ['ಕನ್ನಡ (Kannada)', 'English', 'ಗಣಿತ (Mathematics)', 'ವಿಜ್ಞಾನ (Science)', 'ಸಮಾಜ ವಿಜ್ಞಾನ (Social Science)'];
+        }
+        
+        subjects.forEach(sub => {
+            let opt = document.createElement('option');
+            opt.value = sub;
+            opt.innerHTML = sub;
+            subSelect.appendChild(opt);
+        });
+        updateChapters();
+    }
+
+    function updateChapters() {
+        const cls = document.getElementById('classSelect').value;
+        const sub = document.getElementById('subjectSelect').value;
+        const chapSelect = document.getElementById('chapterSelect');
+        chapSelect.innerHTML = '';
+
+        let chapters = [];
+        if(db[cls] && db[cls][sub]) {
+            chapters = db[cls][sub];
+        } else {
+            chapters = [{
+                title: "ಮಾದರಿ ಅಧ್ಯಾಯ (Standard Chapter)",
+                written: [
+                    { q: "1. ಈ ಪಾಠದ ಮುಖ್ಯ ಪರಿಕಲ್ಪನೆ ಏನು?", marks: "2 Marks", a: "ಕಲಿಕಾ ಫಲಗಳನ್ನು ಸಾಧಿಸುವುದು." },
+                    { q: "2. ಉದಾಹರಣೆ ನೀಡಿ ವಿವರಿಸಿ.", marks: "3 Marks", a: "ದೈನಂದಿನ ಜೀವನದ ಉದಾಹರಣೆ." }
+                ],
+                oral: ["ಈ ಪಾಠದಿಂದ ನೀವು ಏನು ತಿಳಿದುಕೊಂಡಿರಿ?"]
+            }];
+        }
+
+        chapters.forEach((chap, index) => {
+            let opt = document.createElement('option');
+            opt.value = index;
+            opt.innerHTML = chap.title;
+            chapSelect.appendChild(opt);
+        });
+    }
+
+    // Initialize on load
+    updateSubjects();
+
+    function generateQuestionPaper() {
+        const cls = document.getElementById('classSelect').value;
+        const sub = document.getElementById('subjectSelect').value;
+        const chapIndex = document.getElementById('chapterSelect').value;
+        
+        let chapData = db[cls] && db[cls][sub] ? db[cls][sub][chapIndex] : {
+            title: "ಮಾದರಿ ಪಾಠ",
+            written: [{q: "1. ಮಾದರಿ ಪ್ರಶ್ನೆ", marks: "2 Marks", a: "ಮಾದರಿ ಉತ್ತರ"}],
+            oral: ["ಮೌಖಿಕ ಪ್ರಶ್ನೆ"]
+        };
+
+        let marksHeader = "";
+        if(cls <= 5) {
+            marksHeader = `
+                <div class="marks-info">
+                    <strong>ಅಂಕಗಳ ಹಂಚಿಕೆ (1-5 ತರಗತಿ - Bilingual):</strong> ಒಟ್ಟು ಅಂಕಗಳು: 20<br>
+                    • ಲಿಖಿತ ಪರೀಕ್ಷೆ (Written with Answers): 10 ಅಂಕಗಳು<br>
+                    • ಮೌಖಿಕ ಪರೀಕ್ಷೆ (Oral): 5 ಅಂಕಗಳು<br>
+                    • ಚಟುವಟಿಕೆ/ಮೌಲ್ಯಮಾಪನ (Activity): 5 ಅಂಕಗಳು
+                </div>`;
+        } else {
+            marksHeader = `
+                <div class="marks-info">
+                    <strong>ಅಂಕಗಳ ಹಂಚಿಕೆ (6-7 ತರಗತಿ - Kannada Medium):</strong> ಒಟ್ಟು ಅಂಕಗಳು: 20<br>
+                    • ಲಿಖಿತ ಪರೀಕ್ಷೆ (Written with Answers): 15 ಅಂಕಗಳು<br>
+                    • ಮೌಖಿಕ ಪರೀಕ್ಷೆ (Oral): 5 ಅಂಕಗಳು
+                </div>`;
+        }
+
+        let writtenHTML = "";
+        chapData.written.forEach(item => {
+            writtenHTML += `<div class="qa-box">
+                <div><strong>${item.q}</strong> <span style="float:right; color:#555;">[${item.marks}]</span></div>
+                <div class="answer">ಉತ್ತರ: ${item.a}</div>
+            </div>`;
+        });
+
+        let oralHTML = "";
+        chapData.oral.forEach((q, i) => {
+            oralHTML += `<div>${i+1}. ${q}</div>`;
+        });
+
+        let html = `
+            <h2>ಕರ್ನಾಟಕ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ</h2>
+            <h3 style="text-align:center; margin:5px 0;">LBA ಅಧ್ಯಾಯವಾರು ಮೌಲ್ಯಮಾಪನ ಪ್ರಶ್ನೆ ಪತ್ರಿಕೆ ಮತ್ತು ಉತ್ತರಗಳು (2026-27)</h3>
+            <hr>
+            <p><strong>ತರಗತಿ:</strong> ${cls}ನೇ ತರಗತಿ &nbsp;&nbsp;|&nbsp;&nbsp; <strong>ವಿಷಯ:</strong> ${sub}</p>
+            <p><strong>ಆಯ್ಕೆಮಾಡಿದ ಪಾಠ:</strong> ${chapData.title}</p>
+            ${marksHeader}
+            <hr>
+            <h4>ಭಾಗ-ಎ: ಲಿಖಿತ ಪರೀಕ್ಷೆ ಮತ್ತು ಉತ್ತರಗಳು (Written Test with Answers)</h4>
+            ${writtenHTML}
+            <br>
+            <h4>ಭಾಗ-ಬಿ: ಮೌಖಿಕ ಪರೀಕ್ಷೆ ಪ್ರಶ್ನೆಗಳು (Oral Test - 5 Marks)</h4>
+            ${oralHTML}
+        `;
+
+        document.getElementById('resultContent').innerHTML = html;
+        document.getElementById('outputArea').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
